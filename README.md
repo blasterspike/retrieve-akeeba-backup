@@ -4,23 +4,22 @@
 
 1. [Description](#description)
 2. [Usage](#usage)
-3. [The ini file](#the-ini-file)
-   3.1. [The structure](#the-structure)
-   3.2. [Example](#example)
-4. [Retention](#retention)
-   4.1. [Short term](#short-term)
-   4.2. [Long term](#long-term)
+3. [The ini file](#the-ini-file)  
+  3.1. [The structure](#the-structure)  
+  3.2. [Example](#example)
+4. [Retention](#retention)  
+  4.1. [Short term](#short-term)  
+  4.2. [Long term](#long-term)
 5. [Limitations](#limitations)
 
 ## Description
 
-This is a script to:
-- trigger an Akeeba Backup in Joomla
-- download locally the file generated using FTP
-- store the file based on a retention
+This is a script to:  
+- trigger an Akeeba Backup in Joomla  
+- download locally the file generated using FTP  
+- store the file based on a retention  
 
-At the end of the process, the script will send an e-mail with the total time.
-
+At the end of the process, the script will send an e-mail with the total time.  
 The script reads all the configurations from an ini file and is intended to be run every day.
 
 ## Usage
@@ -39,7 +38,7 @@ python /usr/local/bin/retrieve_akeeba_backup.py >> /usr/local/bin/retrieve_akeeb
 
 ## The ini file
 
-The ini file must be called *settings.ini* and must be place in the same directory where the script is.
+The ini file must be called *settings.ini* and must be place in the same directory where the script is.  
 All the fields are mandatory.
 
 ### The structure
@@ -95,20 +94,17 @@ smtp_server = localhost
 
 ### Short term
 
-On the short term retention, files will be kept only for the specified days.
-Example: if you run the script every day and you have set the short_term_retention to 7, all the files in the short_term_path older
-than 7 days will be deleted.
+On the short term retention, files will be kept only for the specified days.  
+Example: if you run the script every day and you have set the short_term_retention to 7, all the files in the short_term_path older than 7 days will be deleted.
 
 ### Long term
 
-On the long term retention, files will be kept only for the specified weeks.
-Only the backup taken on Sunday will be considered.
-Example: if you run the script every day and you have set the long_term_retention to 26, all the files in the long_term_path older
-than 26 weeks will be deleted.
+On the long term retention, files will be kept only for the specified weeks.  
+Only the backup taken on Sunday will be considered.  
+Example: if you run the script every day and you have set the long_term_retention to 26, all the files in the long_term_path older than 26 weeks will be deleted.
 
 ## Limitations
 
-This script has been tested on:
-
-OS: Synolody DSM 5.2-5644
+This script has been tested on:  
+OS: Synolody DSM 5.2-5644  
 Python: 2.7.9
