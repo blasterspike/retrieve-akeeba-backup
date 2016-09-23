@@ -75,7 +75,7 @@ def main():
 
     # Read settings from ini file
     settings = ConfigParser.RawConfigParser(allow_no_value=True)
-    ini_file = 'settings.ini'
+    ini_file = os.path.dirname(os.path.realpath(__file__)) + '/settings.ini'
     settings.read(ini_file)
     # Set the variables
     ftp_server = settings.get('credentials', 'ftp_server')
