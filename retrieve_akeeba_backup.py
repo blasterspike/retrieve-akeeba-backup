@@ -41,10 +41,9 @@ def rotation(filename, short_term_retention, long_term_retention, short_term_pat
             os.remove(os.path.join(short_term_path, file))
             logging.info('Removed {0}'.format(file))
 
-    # Every Sunday I keep a copy stored for 6 months
-    if time.strftime('%w', time.gmtime()) == 0:
+    # Every Sunday I keep a copy stored for a period specified by long_term_retention in settings.ini
+    if time.strftime('%w', time.gmtime()) == '0':
         for file in os.listdir(long_term_path):
-            # Like the previous command but multiplied by 26 weeks
             if os.stat(os.path.join(long_term_path, file)).st_mtime < time.time() - int(long_term_retention) * 7 * 86400:
                 os.remove(os.path.join(long_term_path, file))
                 logging.info('Removed {0}'.format(file))
