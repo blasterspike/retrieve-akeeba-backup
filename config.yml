@@ -1,0 +1,24 @@
+settings:
+  remote_backup_path:
+  trigger_url:
+  short_term_retention:
+  long_term_retention:
+  short_term_path:
+  long_term_path:
+  domain:
+
+#ftp:
+#  server:
+#  username:
+#  password:
+
+ssh:
+  server:
+  username:
+  port:
+  pkey_file:
+
+e-mail:
+  sender:
+  receiver:
+  smtp_server:

@@ -24,62 +24,61 @@ The script reads all the configurations from an ini file and is intended to be r
 
 ## Usage
 
-Provide the full path to the script so it will automatically read the ini file from the same directory.  
-If you want to connect to your server using SSH
+The script has some dependencies specified in _requirements.txt_, to install them
 
 ```bash
-python /usr/local/bin/retrieve_akeeba_backup.py -m ssh
+pip install -r requirements.txt
 ```
 
-If you want to connect to your server using FTP
+Provide the full path to the script so it will automatically read the config file from the same directory.  
+This script works on Python 3.
 
 ```bash
-python /usr/local/bin/retrieve_akeeba_backup.py -m ftp
+python3 /usr/local/bin/retrieve_akeeba_backup.py
 ```
 
-If you want to redirect the output
+## The configuration file
 
-```bash
-python /usr/local/bin/retrieve_akeeba_backup.py -m ssh >> /usr/local/bin/retrieve_akeeba_backup.log 2>&1
-```
-
-## The ini file
-
-The ini file must be called *settings.ini* and must be place in the same directory where the script is.  
-All the fields are mandatory.
+The configuration file is a YAML file, it must be called *config.yml* and it must be placed in the same directory 
+where the script is.
 
 ### The structure
 
-If you select to use SSH, you can omit the _[ftp]_ section and vice versa.
+If you select to use _ssh_, you have to omit the _ftp_ section and vice versa.  
+Example of a configuration file with SSH:
 
-```ini
-[ftp]
-ftp_server = <FTP server>
-username = <FTP username>
-password = <FTP password>
-
-[ssh]
-ssh_server = <SSH server>
-username = <SSH username>
-port = <SSH port>
-pkey_file = <Path to private key>
-
-[settings]
-remote_backup_path = <Path on the FTP server to the backup folder of Akeeba Backup>
-trigger_url = <The URL that you need to visit in order to start the backup with Akeeba Backup.
+```yaml
+settings:
+  remote_backup_path: <Path on the FTP server to the backup folder of Akeeba Backup>
+  trigger_url: <The URL that you need to visit in order to start the backup with Akeeba Backup.
                You can find this string going in backend of Joomla to Components > Akeeba Backup
                > Scheduling Information > Url you want to execute>
-short_term_retention =  <Number of days that you want to keep the backup>
-long_term_retention = <Number of weeks that you want to keep the backup.
+  short_term_retention:  <Number of days that you want to keep the backup>
+  long_term_retention: <Number of weeks that you want to keep the backup.
                        Only the Sunday backup will be considered to be stored>
-short_term_path = <Path to your daily backups>
-long_term_path = <Path to your weekly backups>
+  short_term_path: <Path to your daily backups. Integer.>
+  long_term_path: <Path to your weekly backups. Integer.>
+  domain: <Domain name of your website> 
+ 
+ssh:
+  server: <SSH server>
+  username: <SSH username>
+  port: <SSH port. Integer.>
+  pkey_file: <Path to private key>
+ 
+e-mail:
+  sender: <e-mail address of the sender>
+  receiver: <e-mail address of the receiver>
+  smtp_server: <SMTP server name>
+```
 
-[e-mail]
-sender = <e-mail address of the sender>
-receiver = <e-mail address of the receiver>
-domain = <Domain name of your website. Used in the e-mail notification>
-smtp_server = <SMTP server name>
+While if you want to use FTP, delete the SSH key and add instead
+
+```yaml
+ftp:
+  ftp_server: <FTP server>
+  username: <FTP username>
+  password: <FTP password>
 ```
 
 ## Retention
