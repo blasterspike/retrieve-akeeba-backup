@@ -174,7 +174,7 @@ def send_mail(text, sender, receiver, domain, smtp_server):
     msg = MIMEText(text)
     msg['From'] = sender
     msg['To'] = receiver
-    msg['Subject'] = 'Backup of ' + domain + ' completed'
+    msg['Subject'] = 'Backup of {0} completed'.format(domain)
 
     s = smtplib.SMTP(smtp_server)
     s.sendmail(sender, receiver, msg.as_string())
@@ -186,18 +186,20 @@ def rotation(logger, filename, short_term_retention, long_term_retention, short_
         # Get the list of files older than 7 days
         if os.stat(os.path.join(short_term_path, file)).st_mtime < time.time() - int(short_term_retention) * 86400:
             os.remove(os.path.join(short_term_path, file))
-            logger.info('Removed {0}'.format(file))
+            logger.info('Removed {0} from {1}'.format(file, short_term_path))
 
     # Every Sunday I keep a copy stored for a period specified by long_term_retention in settings.ini
     if time.strftime('%w', time.gmtime()) == '0':
         for file in os.listdir(long_term_path):
             if os.stat(os.path.join(long_term_path, file)).st_mtime < time.time() - int(long_term_retention) * 7 * 86400:
                 os.remove(os.path.join(long_term_path, file))
-                logger.info('Removed {0}'.format(file))
-        os.system('cp ' + filename + ' "' + long_term_path + '"')
+                logger.info('Removed {0} from {1}'.format(file, long_term_path))
+        os.system('cp {dirname}/{filename} "{long_term_path}"'.
+                  format(dirname=os.path.dirname(__file__), filename=filename, long_term_path=long_term_path))
         logger.info('{0} stored in {1}'.format(filename, long_term_path))
 
-    os.system('mv ' + filename + ' "' + short_term_path + '"')
+    os.system('mv {dirname}/{filename} "{short_term_path}"'.
+              format(dirname=os.path.dirname(__file__), filename=filename, short_term_path=short_term_path))
     logger.info('{0} stored in {1}'.format(filename, short_term_path))
 
 
@@ -212,7 +214,7 @@ def retrieve_from_ftp(logger, ftp_server, username, password, remote_backup_path
     filename = ftps.nlst('site-' + domain + '-*')[0]
     logger.info('Downloading file {0}'.format(filename))
 
-    with open(filename, 'wb') as f:
+    with open('{dirname}/{filename}'.format(dirname=os.path.dirname(__file__), filename=filename), 'wb') as f:
         ftps.retrbinary('RETR ' + filename, f.write)
     logger.info('{0} downloaded'.format(filename))
 
@@ -247,7 +249,8 @@ def retrieve_from_ssh(logger, ssh_server, username, port, pkey_file, remote_back
         if match:
             filename = match.group(0)
     logger.info('Downloading file {0}'.format(filename))
-    sftp.get(remote_backup_path + filename, filename)
+    sftp.get(remote_backup_path + filename,
+             '{dirname}/{filename}'.format(dirname=os.path.dirname(__file__), filename=filename))
     logger.info('{0} downloaded'.format(filename))
 
     # Remove file in web space
@@ -267,7 +270,7 @@ def main():
     logger = logging.getLogger('retrieve_akeeba_backup_logging')
     logger.setLevel(logging.INFO)
     # Create file handler
-    fh = logging.FileHandler('retrieve_akeeba_backup.log')
+    fh = logging.FileHandler('{0}/retrieve_akeeba_backup.log'.format(os.path.dirname(__file__)))
     # Create console handler
     ch = logging.StreamHandler()
     # Create formatter and add it to the handlers
@@ -278,7 +281,7 @@ def main():
     logger.addHandler(ch)
     logger.addHandler(fh)
 
-    with open('config.yml', 'r') as config_file:
+    with open('{0}/config.yml'.format(os.path.dirname(__file__)), 'r') as config_file:
         try:
             config_data = yaml.load(config_file)
         except yaml.YAMLError as exc:

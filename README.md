@@ -4,13 +4,11 @@
 
 1. [Description](#description)
 2. [Usage](#usage)
-3. [The ini file](#the-ini-file)  
+3. [The configuration file](#the-configuration-file)  
   3.1. [The structure](#the-structure)  
-  3.2. [Example](#example)
 4. [Retention](#retention)  
   4.1. [Short term](#short-term)  
   4.2. [Long term](#long-term)
-5. [Limitations](#limitations)
 
 ## Description
 
@@ -21,6 +19,8 @@ This is a script to:
 
 At the end of the process, the script will send an e-mail with the total time.  
 The script reads all the configurations from an ini file and is intended to be run every day.
+
+The script logs to standard output and to a file located in the same directory.
 
 ## Usage
 
